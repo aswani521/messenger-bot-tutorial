@@ -3,6 +3,7 @@ var bodyParser = require('body-parser')
 var request = require('request')
 var app = express()
 var token = "EAAZA1HjiMdTMBAMdFzJFZBKhhO2ALP418zH5PsnuXjWMXErn1Tfa4pMj924nwPAAPoyHugTZAI8Nm71YMsCVetDZARZCamJ3vHLLDEnfm8oeDKPHi4EglajuISdIyG4dTfrQKhdvAQvj5kByueVKq6byJKQM0DcS3PuijIZCIYAQZDZD";
+var booksCatalog = require('./data/books_demo.json');
 
 var texttools = require('./texttools');
 
@@ -95,6 +96,25 @@ function sendTextMessage(sender, text) {
 			console.log('Error: ', response.body.error)
 		}
 	})
+}
+
+function generateProductElement(index)
+{
+	var product = booksCatalog[index];
+	return {
+					"title": product.title,
+					"subtitle": product.subtitle,
+					"image_url": product.img_url || "",
+					"buttons": [{
+						"type": "web_url",
+						"url": product.web_url,
+						"title": product.title || ""
+					}, {
+						"type": "postback",
+						"title": "Postback",
+						"payload": "Payload for first element in a generic bubble",
+					}],
+				} 
 }
 
 function sendGenericMessage(sender) {
