@@ -10,18 +10,20 @@ var texttools = require('./texttools');
 app.set('port', (process.env.PORT || 5000))
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({
+	extended: false
+}))
 
 // parse application/json
 app.use(bodyParser.json())
 
 // index
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
 	res.send('hello world i am a secret bot')
 })
 
 // for facebook verification
-app.get('/webhook/', function (req, res) {
+app.get('/webhook/', function(req, res) {
 	if (req.query['hub.verify_token'] === 'cibin_doesnt_know_how_fynny_he_is') {
 		res.send(req.query['hub.challenge'])
 	}
@@ -29,7 +31,7 @@ app.get('/webhook/', function (req, res) {
 })
 
 // to post data
-app.post('/webhook/', function (req, res) {
+app.post('/webhook/', function(req, res) {
 	messaging_events = req.body.entry[0].messaging
 	for (i = 0; i < messaging_events.length; i++) {
 		event = req.body.entry[0].messaging[i]
@@ -39,7 +41,7 @@ app.post('/webhook/', function (req, res) {
 		}
 		if (event.postback) {
 			text = JSON.stringify(event.postback)
-			sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
+			sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token)
 			continue
 		}
 	}
@@ -48,28 +50,28 @@ app.post('/webhook/', function (req, res) {
 
 
 // products: {id => {title, price, etc}}
-function randomProducts(products, n){
+function randomProducts(products, n) {
 	var selectedProducts = {};
 	var keys = _.shuffle(Object.keys(products));
-	for(i = 0; i < n && i < keys.length; i++){
+	for (i = 0; i < n && i < keys.length; i++) {
 		selectedProducts[keys[i]] = products[keys[i]]
 	}
 
 	return selectedProducts;
 }
 
-function searchProducts(products, tokens){
-	for(i = 0; i < tokens.length; i++){
+function searchProducts(products, tokens) {
+	for (i = 0; i < tokens.length; i++) {
 		products = searchProductsWithToken(products, tokens[i])
 	}
 	return products
 }
 
-function searchProductsWithToken(products, token){
+function searchProductsWithToken(products, token) {
 	var selectedProducts = {};
 	for (var key in products) {
 		var product = products[key];
-		if(product.title.indexOf(token) > -1) {
+		if (product.title.indexOf(token) > -1) {
 			selectedProducts[key] = product;
 		}
 	}
@@ -79,14 +81,18 @@ function searchProductsWithToken(products, token){
 
 function sendTextMessage(sender, text) {
 	messageData = {
-		text:text
+		text: text
 	}
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
-		qs: {access_token:token},
+		qs: {
+			access_token: token
+		},
 		method: 'POST',
 		json: {
-			recipient: {id:sender},
+			recipient: {
+				id: sender
+			},
 			message: messageData,
 		}
 	}, function(error, response, body) {
@@ -98,26 +104,26 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-function generateProductElement(index)
-{
+function generateProductElement(index) {
 	var product = booksCatalog[index];
 	return {
-					"title": product.title,
-					"subtitle": product.subtitle,
-					"image_url": product.img_url || "",
-					"buttons": [{
-						"type": "web_url",
-						"url": product.web_url,
-						"title": product.title || ""
-					}, {
-						"type": "postback",
-						"title": "Postback",
-						"payload": "Payload for first element in a generic bubble",
-					}],
-				} 
+		"title": product.title,
+		"image_url": product.image_url || "",
+		"buttons": [{
+			"type": "web_url",
+			"url": product.url,
+			"title": product.title || ""
+		}, {
+			"type": "postback",
+			"title": "Postback",
+			"payload": "Payload for first element in a generic bubble",
+		}],
+	}
 }
 
 function sendGenericMessage(sender) {
+	var elements = [];
+	// elements.push(generateProductElement());
 	messageData = {
 		"attachment": {
 			"type": "template",
@@ -151,10 +157,14 @@ function sendGenericMessage(sender) {
 	}
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
-		qs: {access_token:token},
+		qs: {
+			access_token: token
+		},
 		method: 'POST',
 		json: {
-			recipient: {id:sender},
+			recipient: {
+				id: sender
+			},
 			message: messageData,
 		}
 	}, function(error, response, body) {
