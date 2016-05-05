@@ -2,6 +2,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
 var app = express()
+var token = "EAAZA1HjiMdTMBAMdFzJFZBKhhO2ALP418zH5PsnuXjWMXErn1Tfa4pMj924nwPAAPoyHugTZAI8Nm71YMsCVetDZARZCamJ3vHLLDEnfm8oeDKPHi4EglajuISdIyG4dTfrQKhdvAQvj5kByueVKq6byJKQM0DcS3PuijIZCIYAQZDZD";
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -47,7 +48,36 @@ app.post('/webhook/', function (req, res) {
 	res.sendStatus(200)
 })
 
-var token = "EAAZA1HjiMdTMBAMdFzJFZBKhhO2ALP418zH5PsnuXjWMXErn1Tfa4pMj924nwPAAPoyHugTZAI8Nm71YMsCVetDZARZCamJ3vHLLDEnfm8oeDKPHi4EglajuISdIyG4dTfrQKhdvAQvj5kByueVKq6byJKQM0DcS3PuijIZCIYAQZDZD";
+
+// products: {id => {title, price, etc}}
+function randomProducts(products, n){
+	var selectedProducts = {};
+	var keys = _.shuffle(Object.keys(products));
+	for(i = 0; i < n && i < keys.length; i++){
+		selectedProducts[keys[i]] = products[keys[i]]
+	}
+
+	return selectedProducts;
+}
+
+function searchProducts(products, tokens){
+	for(i = 0; i < tokens.length; i++){
+		products = searchProductsWithToken(products, tokens[i])
+	}
+	return products
+}
+
+function searchProductsWithToken(products, token){
+	var selectedProducts = {};
+	for (var key in products) {
+		var product = products[key];
+		if(product.title.indexOf(token) > -1) {
+			selectedProducts[key] = product;
+		}
+	}
+
+	return selectedProducts;
+}
 
 function sendTextMessage(sender, text) {
 	messageData = {
