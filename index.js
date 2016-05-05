@@ -139,7 +139,7 @@ function sendGenericMessage(sender) {
 			"type": "template",
 			"payload": {
 				"template_type": "generic",
-				"elements": elements
+				"elements": JSON.stringify(elements)
 			}
 		}
 	}
