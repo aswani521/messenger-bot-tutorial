@@ -39,9 +39,9 @@ app.post('/webhook/', function(req, res) {
 		sender = event.sender.id
 		if (event.message && event.message.text) {
 			text = event.message.text
-		    if (text === 'Generic') {
-				sendGenericMessage(sender);
-			}
+		 //    if (text === 'Generic') {
+			// 	sendGenericMessage(sender);
+			// }
 			sendTextMessage(sender, "Whaaaaaat? Did you really say " + text.substring(0, 200))
 			continue
 		}
