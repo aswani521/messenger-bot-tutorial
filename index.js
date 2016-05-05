@@ -5,8 +5,8 @@ var app = express()
 var token = "EAAZA1HjiMdTMBAMdFzJFZBKhhO2ALP418zH5PsnuXjWMXErn1Tfa4pMj924nwPAAPoyHugTZAI8Nm71YMsCVetDZARZCamJ3vHLLDEnfm8oeDKPHi4EglajuISdIyG4dTfrQKhdvAQvj5kByueVKq6byJKQM0DcS3PuijIZCIYAQZDZD";
 var booksCatalog = require('./data/books.json');
 
-var texttools = require('./texttools');
-var messages = require('./messages');
+// var texttools = require('./texttools');
+// var messages = require('./messages');
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -38,8 +38,12 @@ app.post('/webhook/', function(req, res) {
 		event = req.body.entry[0].messaging[i]
 		sender = event.sender.id
 		if (event.message && event.message.text) {
-			texttools.process(sender, event);
-			continue;
+			text = event.message.text
+		    if (text === 'Generic') {
+				messages.sendGenericMessage(sender);
+			}
+			sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+			continue
 		}
 		if (event.postback) {
 			text = JSON.stringify(event.postback)
