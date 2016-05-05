@@ -39,9 +39,9 @@ app.post('/webhook/', function(req, res) {
 		sender = event.sender.id
 		if (event.message && event.message.text) {
 			text = event.message.text
-		 //    if (text === 'Generic') {
-			// 	sendGenericMessage(sender);
-			// }
+		    if (text === 'Generic') {
+				sendGenericMessage(sender);
+			}
 			sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			continue
 		}
@@ -110,59 +110,59 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-// function generateProductElement(product) {
-// 	return {
-// 		"title": product.title,
-// 		"image_url": product.image_url || "",
-// 		"buttons": [{
-// 			"type": "web_url",
-// 			"url": product.url,
-// 			"title": product.title || ""
-// 		}, {
-// 			"type": "postback",
-// 			"title": "Postback",
-// 			"payload": "Payload for first element in a generic bubble",
-// 		}],
-// 	}
-// }
+function generateProductElement(product) {
+	return {
+		"title": product.title,
+		"image_url": product.image_url || "",
+		"buttons": [{
+			"type": "web_url",
+			"url": product.url,
+			"title": product.title || ""
+		}, {
+			"type": "postback",
+			"title": "Postback",
+			"payload": "Payload for first element in a generic bubble",
+		}],
+	}
+}
 
-// function sendGenericMessage(sender) {
-// 	var elements = [];
-// 	var selectedProducts = randomProducts(booksCatalog, 2);
-// 	var keys = Object.keys(selectedProducts)
-// 	for(i = 0; i < keys.length; i ++){
-// 		elements.push(generateProductElement(selectedProducts[keys[i]]));
-// 	}
+function sendGenericMessage(sender) {
+	var elements = [];
+	var selectedProducts = randomProducts(booksCatalog, 2);
+	var keys = Object.keys(selectedProducts)
+	for(i = 0; i < keys.length; i ++){
+		elements.push(generateProductElement(selectedProducts[keys[i]]));
+	}
 
-// 	messageData = {
-// 		"attachment": {
-// 			"type": "template",
-// 			"payload": {
-// 				"template_type": "generic",
-// 				"elements": elements
-// 			}
-// 		}
-// 	}
-// 	request({
-// 		url: 'https://graph.facebook.com/v2.6/me/messages',
-// 		qs: {
-// 			access_token: token
-// 		},
-// 		method: 'POST',
-// 		json: {
-// 			recipient: {
-// 				id: sender
-// 			},
-// 			message: messageData,
-// 		}
-// 	}, function(error, response, body) {
-// 		if (error) {
-// 			console.log('Error sending messages: ', error)
-// 		} else if (response.body.error) {
-// 			console.log('Error: ', response.body.error)
-// 		}
-// 	})
-// }
+	messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "generic",
+				"elements": elements
+			}
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {
+			access_token: token
+		},
+		method: 'POST',
+		json: {
+			recipient: {
+				id: sender
+			},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
 
 // spin spin sugar
 app.listen(app.get('port'), function() {
