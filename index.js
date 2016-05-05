@@ -42,7 +42,7 @@ app.post('/webhook/', function(req, res) {
 		    if (text === 'Generic') {
 				sendGenericMessage(sender);
 			}
-			sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+			sendTextMessage(sender, "Whaaaaaat? Did you really say " + text.substring(0, 200))
 			continue
 		}
 		if (event.postback) {
