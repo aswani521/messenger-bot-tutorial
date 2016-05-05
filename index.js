@@ -3,7 +3,7 @@ var bodyParser = require('body-parser')
 var request = require('request')
 var app = express()
 var token = "EAAZA1HjiMdTMBAMdFzJFZBKhhO2ALP418zH5PsnuXjWMXErn1Tfa4pMj924nwPAAPoyHugTZAI8Nm71YMsCVetDZARZCamJ3vHLLDEnfm8oeDKPHi4EglajuISdIyG4dTfrQKhdvAQvj5kByueVKq6byJKQM0DcS3PuijIZCIYAQZDZD";
-var booksCatalog = require('./data/books_demo.json');
+var booksCatalog = require('./data/books.json');
 
 var texttools = require('./texttools');
 var messages = require('./messages');
@@ -105,8 +105,7 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-function generateProductElement(index) {
-	var product = booksCatalog[index];
+function generateProductElement(product) {
 	return {
 		"title": product.title,
 		"image_url": product.image_url || "",
@@ -120,6 +119,44 @@ function generateProductElement(index) {
 			"payload": "Payload for first element in a generic bubble",
 		}],
 	}
+}
+
+function sendGenericMessage(sender) {
+	var elements = [];
+	var selectedProducts = randomProducts(booksCatalog, 2);
+	var keys = Object.keys(selectedProducts)
+	for(i = 0; i < keys.length; i ++){
+		elements.push(generateProductElement(selectedProducts[keys[i]]));
+	}
+
+	messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "generic",
+				"elements": elements
+			}
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {
+			access_token: token
+		},
+		method: 'POST',
+		json: {
+			recipient: {
+				id: sender
+			},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
 }
 
 // spin spin sugar
