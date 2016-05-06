@@ -5,6 +5,18 @@ var app = express()
 var token = "EAAZA1HjiMdTMBAMdFzJFZBKhhO2ALP418zH5PsnuXjWMXErn1Tfa4pMj924nwPAAPoyHugTZAI8Nm71YMsCVetDZARZCamJ3vHLLDEnfm8oeDKPHi4EglajuISdIyG4dTfrQKhdvAQvj5kByueVKq6byJKQM0DcS3PuijIZCIYAQZDZD";
 var booksCatalog = require('./data/books.json');
 
+var quotes = [
+	"I don't think so.",
+	"I'm not going to do it!",
+	"I'm going home",
+	"I'm deep in the stack, leave me alone",
+	"Unacceptable",
+	"Whaaaat?",
+	"Where's the food?",
+	"It's not my day",
+	"Hey Charles, so you're picture is still underway.",
+]
+
 // var texttools = require('./texttools');
 // var messages = require('./messages');
 
@@ -39,10 +51,15 @@ app.post('/webhook/', function(req, res) {
 		sender = event.sender.id
 		if (event.message && event.message.text) {
 			text = event.message.text
-		    if (text === 'Generic') {
-				sendGenericMessage(sender);
+			if (text === 'Who won the hackathon?') {
+				sendTextMessage(sender, "Well... that's an easy one: THE ASWANI TEAM!!!")
 			}
-			sendTextMessage(sender, "Whaaaaaat? Did you really say " + text.substring(0, 200))
+			else {
+			    if (text === 'Surprise me') {
+					sendGenericMessage(sender);
+				}
+				sendTextMessage(sender, quotes[_.random(0,quotes.length)] + " Meh: " + text.substring(0, 200))
+			}
 			continue
 		}
 		if (event.postback) {
