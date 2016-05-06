@@ -150,23 +150,28 @@ function sendGenericMessage(sender) {
 	// for(i = 0; i < keys.length; i ++){
 	// 	elements.push(generateProductElement(selectedProducts[keys[i]]));
 	// }
-	var elements = [generateProductElement(
-		{
-		  "category": "Juvenile Fiction - Social Issues - Values & Virtues",
-		  "title": "Max's Dragon Shirt",
-		  "url": "http://www.penguinrandomhouse.com//books/320471/maxs-dragon-shirt-by-rosemary-wells-illustrated-by-rosemary-wells/9780140567274",
-		  "price": 5.99,
-		  "image_url": "https://images.randomhouse.com/cover/9780140567274",
-		  "id": 2
-		}),
-		generateProductElement({
-		  "category": "History - United States - General",
-		  "title": "10 Days That Unexpectedly Changed America",
-		  "url": "http://www.penguinrandomhouse.com//books/60258/10-days-that-unexpectedly-changed-america-by-steven-m-gillon/9780307339348",
-		  "price": 14.0,
-		  "image_url": "https://images.randomhouse.com/cover/9780307339348",
-		  "id": 3
-		})
+
+	// var elements = [generateProductElement(
+	// 	{
+	// 	  "category": "Juvenile Fiction - Social Issues - Values & Virtues",
+	// 	  "title": "Max's Dragon Shirt",
+	// 	  "url": "http://www.penguinrandomhouse.com//books/320471/maxs-dragon-shirt-by-rosemary-wells-illustrated-by-rosemary-wells/9780140567274",
+	// 	  "price": 5.99,
+	// 	  "image_url": "https://images.randomhouse.com/cover/9780140567274",
+	// 	  "id": 2
+	// 	}),
+	// 	generateProductElement({
+	// 	  "category": "History - United States - General",
+	// 	  "title": "10 Days That Unexpectedly Changed America",
+	// 	  "url": "http://www.penguinrandomhouse.com//books/60258/10-days-that-unexpectedly-changed-america-by-steven-m-gillon/9780307339348",
+	// 	  "price": 14.0,
+	// 	  "image_url": "https://images.randomhouse.com/cover/9780307339348",
+	// 	  "id": 3
+	// 	})
+	// ];
+	var elements = [
+	  generateProductElement(booksCatalog[_.random(0,500)]),
+	  generateProductElement(booksCatalog[_.random(0,500)])
 	];
 	messageData = {
 		"attachment": {
