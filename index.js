@@ -4,6 +4,7 @@ var request = require('request')
 var app = express()
 var token = "EAAZA1HjiMdTMBAMdFzJFZBKhhO2ALP418zH5PsnuXjWMXErn1Tfa4pMj924nwPAAPoyHugTZAI8Nm71YMsCVetDZARZCamJ3vHLLDEnfm8oeDKPHi4EglajuISdIyG4dTfrQKhdvAQvj5kByueVKq6byJKQM0DcS3PuijIZCIYAQZDZD";
 var booksCatalog = require('./data/books.json');
+var _ = require('lodash');
 
 var quotes = [
 	"I don't think so.",
